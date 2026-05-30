@@ -5,6 +5,8 @@ import Head from "next/head";
 import { Analytics } from "@vercel/analytics/react"
 import { Footer } from "@/components/ui/footer";
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.hairandmakeupbyanjali.com";
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -16,12 +18,24 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="author" content="Anjali Bhutani" />
         <meta name="robots" content="index, follow" />
 
-        {/* Open Graph / Social Media Meta Tags */}
+        {/* Open Graph */}
+        <meta property="og:site_name" content="Anjali Bhutani - Makeup Artist" />
         <meta property="og:title" content="Anjali Bhutani - Best Makeup Artist in Chandigarh & Delhi" />
         <meta property="og:description" content="Looking for the best bridal or party makeup in Chandigarh and Delhi? Anjali Bhutani offers professional makeup services at our premium makeup studio." />
-        <meta property="og:image" content="https://hairandmakeupbyanjali.com/anjali.jpg" />
-        <meta property="og:url" content="https://hairandmakeupbyanjali.com/" />
+        <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Anjali Bhutani - Professional Makeup Artist" />
+        <meta property="og:url" content={`${BASE_URL}/`} />
         <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_IN" />
+
+        {/* Twitter / WhatsApp Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Anjali Bhutani - Best Makeup Artist in Chandigarh & Delhi" />
+        <meta name="twitter:description" content="Looking for the best bridal or party makeup in Chandigarh and Delhi? Anjali Bhutani offers professional makeup services at our premium makeup studio." />
+        <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
+        <meta name="twitter:image:alt" content="Anjali Bhutani - Professional Makeup Artist" />
 
         {/* JSON-LD Structured Data (SEO Optimization) */}
         <script
@@ -32,14 +46,13 @@ export default function App({ Component, pageProps }: AppProps) {
               "@type": "Person",
               "name": "Anjali Bhutani",
               "jobTitle": "Professional Makeup Artist",
-              "image": "https://hairandmakeupbyanjali.com/anjali.jpg",
+              "image": "https://www.hairandmakeupbyanjali.com/anjali.jpg",
               "sameAs": [
-                "https://www.instagram.com/yourprofile",
-                "https://www.facebook.com/yourpage",
-                "https://www.linkedin.com/in/yourprofile"
+                "https://www.instagram.com/hairandmakeupbyanjali/",
+                "https://www.linkedin.com/in/anjali-bhutani/"
               ],
               "description": "Anjali Bhutani is the best makeup artist in Chandigarh and Delhi, offering professional bridal, HD, and airbrush makeup services at our premium makeup studio.",
-              "url": "https://hairandmakeupbyanjali.com/",
+              "url": "https://www.hairandmakeupbyanjali.com/",
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Chandigarh",
@@ -51,7 +64,7 @@ export default function App({ Component, pageProps }: AppProps) {
             })
           }}
         />
-        <link rel="canonical" href="https://hairandmakeupbyanjali.com/" />
+        <link rel="canonical" href="https://www.hairandmakeupbyanjali.com/" />
       </Head>
       <div className="min-h-screen flex flex-col dark">
         <Navbar />

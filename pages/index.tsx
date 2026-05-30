@@ -1,83 +1,69 @@
 "use client";
 import { HeroParallax } from "@/components/ui/hero-parallax";
+import GoogleReviews from "@/components/ui/google-reviews";
 import Head from "next/head";
 import React from "react";
 
 const hero = () => {
   const products = [
     {
-      title: "Moonbeam",
-      link: "https://gomoonbeam.com",
+      title: "Bridal Makeup by Anjali Bhutani",
       thumbnail: "/images/Hero/Hero1-min.jpg",
     },
     {
-      title: "Cursor",
-      link: "https://cursor.so",
+      title: "HD Bridal Makeup Look",
       thumbnail: "/images/Hero/Hero2-min.jpg",
     },
     {
-      title: "Rogue",
-      link: "https://userogue.com",
+      title: "Traditional Bridal Makeup",
       thumbnail: "/images/Hero/Hero3-min.jpg",
     },
     {
-      title: "Editorially",
-      link: "https://editorially.org",
+      title: "Party Makeup by Anjali",
       thumbnail: "/images/Hero/Hero4-min.jpg",
     },
     {
-      title: "Editrix AI",
-      link: "https://editrix.ai",
+      title: "Airbrush Bridal Makeup",
       thumbnail: "/images/Hero/Hero5-min.jpeg",
     },
     {
-      title: "Pixel Perfect",
-      link: "https://app.pixelperfect.quest",
+      title: "Editorial Makeup Look",
       thumbnail: "/images/Hero/Hero6-min.jpg",
     },
     {
-      title: "Algochurn",
-      link: "https://algochurn.com",
+      title: "Wedding Makeup Artist Chandigarh",
       thumbnail: "/images/Hero/Hero7-min.jpg",
     },
     {
-      title: "Aceternity UI",
-      link: "https://ui.aceternity.com",
+      title: "Engagement Makeup Look",
       thumbnail: "/images/Hero/Hero8-min.jpg",
     },
     {
-      title: "Tailwind Master Kit",
-      link: "https://tailwindmasterkit.com",
+      title: "Reception Makeup by Anjali",
       thumbnail: "/images/Hero/Hero9-min.jpg",
     },
     {
-      title: "Tailwind Master Kit",
-      link: "https://tailwindmasterkit.com",
+      title: "Glam Party Makeup",
       thumbnail: "/images/Hero/Hero10-min.jpeg",
     },
     {
-      title: "Tailwind Master Kit",
-      link: "https://tailwindmasterkit.com",
+      title: "Bridal Hair and Makeup",
       thumbnail: "/images/Hero/Hero11-min.jpg",
     },
     {
-      title: "Tailwind Master Kit",
-      link: "https://tailwindmasterkit.com",
+      title: "Destination Wedding Makeup",
       thumbnail: "/images/Hero/Hero12-min.jpeg",
     },
     {
-      title: "Tailwind Master Kit",
-      link: "https://tailwindmasterkit.com",
+      title: "Mehndi Ceremony Makeup",
       thumbnail: "/images/Hero/Hero13-min.jpg",
     },
     {
-      title: "Tailwind Master Kit",
-      link: "https://tailwindmasterkit.com",
+      title: "Sangeet Night Makeup Look",
       thumbnail: "/images/Hero/Hero15-min.jpg",
     },
     {
-      title: "Tailwind Master Kit",
-      link: "https://tailwindmasterkit.com",
+      title: "Professional Makeup Studio Chandigarh",
       thumbnail: "/images/Hero/Hero14-min.jpg",
     },
   ];
@@ -87,6 +73,7 @@ const hero = () => {
       <meta name="description" content="Get professional makeup services by Anjali Bhutani. Bridal, HD, and Airbrush makeup available. Book now!" />
     </Head>
     <HeroParallax products={products} />
+    {/* <GoogleReviews /> */}
   </>
 }
 
