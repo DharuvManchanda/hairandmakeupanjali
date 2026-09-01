@@ -1,12 +1,5 @@
-import { Redis } from "@upstash/redis";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-export const KV_TOKEN_KEY = "instagram:access_token";
-
-const redis = new Redis({
-  url: process.env.INSTAGRAM_KV_REST_API_URL!,
-  token: process.env.INSTAGRAM_KV_REST_API_TOKEN!,
-});
+import { getInstagramToken, IG_TOKEN_KEY } from "../../../lib/instagram-token";
 
 type SuccessResponse = {
   access_token: string;
@@ -15,6 +8,40 @@ type SuccessResponse = {
   permissions: string;
 };
 type ErrorResponse = { error: string };
+
+// Persists the refreshed token to Edge Config via the Vercel REST API so the
+// site picks it up immediately, without a redeploy.
+async function saveToken(token: string) {
+  const connection = process.env.EDGE_CONFIG;
+  const apiToken = process.env.VERCEL_API_TOKEN;
+  const teamId = process.env.VERCEL_TEAM_ID;
+
+  if (!connection || !apiToken) {
+    throw new Error("EDGE_CONFIG or VERCEL_API_TOKEN not configured");
+  }
+
+  const edgeConfigId = new URL(connection).pathname.replace(/^\//, "");
+  const url = `https://api.vercel.com/v1/edge-config/${edgeConfigId}/items${
+    teamId ? `?teamId=${teamId}` : ""
+  }`;
+
+  const res = await fetch(url, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${apiToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      items: [{ operation: "upsert", key: IG_TOKEN_KEY, value: token }],
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to store token in Edge Config: ${res.status} ${await res.text()}`
+    );
+  }
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,14 +54,12 @@ export default async function handler(
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const storedToken = await redis.get<string>(KV_TOKEN_KEY);
-  const token = storedToken ?? process.env.ACCESS_TOKEN;
-
-  if (!token) {
-    return res.status(500).json({ error: "ACCESS_TOKEN not configured" });
-  }
-
   try {
+    const token = await getInstagramToken();
+    if (!token) {
+      return res.status(500).json({ error: "ACCESS_TOKEN not configured" });
+    }
+
     const igRes = await fetch(
       `https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${token}`
     );
@@ -46,7 +71,7 @@ export default async function handler(
 
     const data: SuccessResponse = await igRes.json();
 
-    await redis.set(KV_TOKEN_KEY, data.access_token);
+    await saveToken(data.access_token);
 
     const daysLeft = Math.round(data.expires_in / 86400);
     console.log(`Instagram token refreshed. Expires in ${daysLeft} days.`);

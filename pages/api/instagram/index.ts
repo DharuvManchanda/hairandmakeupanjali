@@ -1,13 +1,5 @@
-import { Redis } from "@upstash/redis";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { KV_TOKEN_KEY } from "./refresh";
-
-function getRedis() {
-  const url = process.env.INSTAGRAM_KV_REST_API_URL;
-  const token = process.env.INSTAGRAM_KV_REST_API_TOKEN;
-  if (!url || !token) return null;
-  return new Redis({ url, token });
-}
+import { getInstagramToken } from "../../../lib/instagram-token";
 
 type Media = {
   id: string;
@@ -42,9 +34,7 @@ export default async function handler(
     return res.status(200).json({ data: hit.data, nextCursor: hit.nextCursor });
   }
 
-  const redis = getRedis();
-  const storedToken = redis ? await redis.get<string>(KV_TOKEN_KEY) : null;
-  const ACCESS_TOKEN = storedToken ?? process.env.ACCESS_TOKEN;
+  const ACCESS_TOKEN = await getInstagramToken();
   if (!ACCESS_TOKEN) {
     return res.status(500).json({ error: "Access token not configured" });
   }

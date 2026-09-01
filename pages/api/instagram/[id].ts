@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getInstagramToken } from "../../../lib/instagram-token";
 
 export type MediaDetail = {
   id: string;
@@ -30,7 +31,7 @@ export default async function handler(
     return res.status(200).json(hit.data);
   }
 
-  const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+  const ACCESS_TOKEN = await getInstagramToken();
   if (!ACCESS_TOKEN) {
     return res.status(500).json({ error: "Access token not configured" });
   }
